@@ -20,10 +20,6 @@ webApp.get('/', (req, res) => {
     res.send(`Hello World.!`);
 });
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
-
 const WA = require('./helper-function/whatsapp-send-message');
 
 // Route for WhatsApp
@@ -32,11 +28,15 @@ webApp.post('/whatsapp', async (req, res) => {
     let message = req.body.Body;
     let senderID = req.body.From;
 
+    console.log(req.body);
     console.log(message);
     console.log(senderID);
 
     // Write a function to send message back to WhatsApp
-    await WA.sendMessage('Hello from the other side.', senderID);
+    if(message == 'hello'){
+        await WA.sendMessage('Hello from the other side.', senderID);
+    }
+    await WA.sendMessage('Adele ist talentiert!', senderID);
 
 });
 
