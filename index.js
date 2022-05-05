@@ -90,13 +90,7 @@ webApp.post('/whatsapp', async (req, res) => {
         
     }
     
-    /*
-    // Write a function to send message back to WhatsApp
-    if(message == 'hello'){
-        await WA.sendMessage('Hello from the other side.', senderID);
-    }
-    await WA.sendMessage('Adele ist talentiert!', senderID);
-    */
+    await WA.sendMessage(message, senderID);
 
 });
 
