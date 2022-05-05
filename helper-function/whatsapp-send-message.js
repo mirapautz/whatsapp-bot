@@ -28,9 +28,7 @@ const sendMessage = async (answer, senderID) => {
 
         } else if (messageType == "slider"){
 
-        } else if (messageType == "video" || messageType == "audio" || messageType == "youtube"){
-
-        } else if (messageType == "image"){
+        } else if (messageType == "video" || messageType == "audio" || messageType == "youtube" || messageType == "image"){
             try {
                 await client.messages.create({
                     to: senderID,
