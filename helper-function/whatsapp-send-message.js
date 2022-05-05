@@ -6,14 +6,16 @@ const client = require('twilio')(accountSid, authToken, {
 });
 
 // Function to send message to WhatsApp
-const sendMessage = async (message, senderID) => {
+const sendMessage = async (messageSender, senderID) => {
 
     try {
-        await client.messages.create({
-            to: senderID,
-            body: message,
-            from: `whatsapp:+14155238886`
-        });
+        if (messageSender == 'moin'){
+            await client.messages.create({
+                to: senderID,
+                body: `Hello from the other side`,
+                from: `whatsapp:+14155238886`
+            });
+        }
     } catch (error) {
         console.log(`Error at sendMessage --> ${error}`);
     }
