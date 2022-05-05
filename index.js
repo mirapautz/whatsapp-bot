@@ -1,3 +1,10 @@
+/*
+to start the application type
+npm start
+
+ngrok server has to be up and running
+ngrokLink/whatsapp in twilio console
+*/
 // external packages
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,7 +15,7 @@ const webApp = express();
 
 // Webapp settings
 webApp.use(bodyParser.urlencoded({
-    extended: true
+    extended: false
 }));
 webApp.use(bodyParser.json());
 
@@ -32,11 +39,64 @@ webApp.post('/whatsapp', async (req, res) => {
     console.log(message);
     console.log(senderID);
 
+    if(message == 'moin'){
+        res.send(`
+        <Response>
+            <Message>Hi!</Message>
+        </Response>
+    `);
+    }else if(message == 'button'){
+
+    }else if(message == 'link'){
+        res.send(`
+            <?xml version="1.0" encoding="UTF-8"?>
+            <Response>
+                <Message>
+                Klick da: <![CDATA[https://subscription.packtpub.com/book/application_development/9781782175896/1/ch01lvl1sec11/the-world-of-twiml-verbs]]>
+                </Message>
+            </Response>
+        `);
+    }else if(message == 'image'){
+        res.send(`
+            <?xml version="1.0" encoding="UTF-8"?>
+            <Response>
+                <Message>
+                    <Media>https://hg1ht-php.websale.biz/genussmagazin/wp-content/uploads/2021/09/Brotbacken_8.jpg</Media>
+                    <Body>hmmmm lecker!</Body>
+                </Message>
+            </Response>
+        `);
+    }else if(message == 'video'){
+        res.send(`
+            <?xml version="1.0" encoding="UTF-8"?>
+            <Response>
+                <Message>
+                    <Media>https://hg1ht-php.websale.biz/genussmagazin/wp-content/uploads/2021/09/Brotbacken_8.jpg</Media>
+                    <Body>hmmmm lecker!</Body>
+                </Message>
+            </Response>
+        `);
+    }else if(message == 'audio'){
+        res.send(`
+            <?xml version="1.0" encoding="UTF-8"?>
+            <Response>
+                <Message>
+                    <Message>Hier ist ein Audio:</Message>
+                    <Play>http://codeskulptor-demos.commondatastorage.googleapis.com/descent/background%20music.mp3</Play>
+                </Message>
+            </Response>
+        `);
+    }else if(message == 'youtube'){
+        
+    }
+    
+    /*
     // Write a function to send message back to WhatsApp
     if(message == 'hello'){
         await WA.sendMessage('Hello from the other side.', senderID);
     }
     await WA.sendMessage('Adele ist talentiert!', senderID);
+    */
 
 });
 
@@ -44,14 +104,3 @@ webApp.post('/whatsapp', async (req, res) => {
 webApp.listen(PORT, () => {
     console.log(`Server is up and running at ${PORT}`);
 });
-
-/*
-client.messages.create({
-    from: 'whatsapp:+14155238886',
-    to: 'whatsapp:' + process.env.PERSONAL_NUMBER,
-    body: 'hmmmmm lecker', 
-    mediaUrl: 'https://hg1ht-php.websale.biz/genussmagazin/wp-content/uploads/2021/09/Brotbacken_8.jpg'
-})
-.then(message => console.log(message.sid))
-.catch((err) => console.log(err));
-*/
