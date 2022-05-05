@@ -31,9 +31,17 @@ const sendMessage = async (answer, senderID) => {
         } else if (messageType == "video" || messageType == "audio" || messageType == "youtube"){
 
         } else if (messageType == "image"){
-
+            try {
+                await client.messages.create({
+                    to: senderID,
+                    mediaUrl: [answer.messages[i].content[0].url],
+                    from: `whatsapp:+14155238886`
+                });
+            } catch (error) {
+                console.log(`Error at sendMessage --> ${error}`);
+            }
         } else if (messageType == "disambiguation"){
-            
+
         }
     }
 };
