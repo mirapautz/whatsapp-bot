@@ -29,7 +29,7 @@ webApp.get('/', (req, res) => {
 
 const WA = require('./helper-function/whatsapp-send-message');
 
-// Route for WhatsApp
+// Route for WhatsAppç
 webApp.post('/whatsapp', async (req, res) => {
 
     let message = req.body.Body;
