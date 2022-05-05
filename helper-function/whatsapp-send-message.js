@@ -6,18 +6,35 @@ const client = require('twilio')(accountSid, authToken, {
 });
 
 // Function to send message to WhatsApp
-const sendMessage = async (messageSender, senderID) => {
+const sendMessage = async (answer, senderID) => {
 
-    try {
-        if (messageSender == 'moin'){
-            await client.messages.create({
-                to: senderID,
-                body: `Hello from the other side`,
-                from: `whatsapp:+14155238886`
-            });
+     //Filter out the messageType from Nordi Bot message
+    for (var i = 0; i < answer.messages.length; i++) {
+        var messageType = JSON.stringify(answer.messages[i].content[0].type).slice(1, -1);
+
+        if(messageType == "markdown" || messageType == "html"){
+            try {
+                await client.messages.create({
+                    to: senderID,
+                    body: answer.messages[0].content[0].text,
+                    from: `whatsapp:+14155238886`
+                });
+            } catch (error) {
+                console.log(`Error at sendMessage --> ${error}`);
+            }
+        } else if (messageType == "button"){
+
+        } else if (messageType == "link"){
+
+        } else if (messageType == "slider"){
+
+        } else if (messageType == "video" || messageType == "audio" || messageType == "youtube"){
+
+        } else if (messageType == "image"){
+
+        } else if (messageType == "disambiguation"){
+            
         }
-    } catch (error) {
-        console.log(`Error at sendMessage --> ${error}`);
     }
 };
 
