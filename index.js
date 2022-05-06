@@ -2,99 +2,99 @@
 to start the application type
 npm start
 
-ngrok server has to be up and running
+ngrok server has to be up and running ('ngrok http 3000')
 ngrokLink/whatsapp in twilio console
 */
 // external packages
-const express = require('express');
-const bodyParser = require('body-parser');
-require('dotenv').config();
+const axios = require("axios");
+const express = require("express");
+const bodyParser = require("body-parser");
+require("dotenv").config();
+
+/////////////////////////////////////////////////////////////////
+/////////////////////BOT CONFIGURATION///////////////////////////
+
+// URL where the request to the bot is headed
+const botURL = "https://devbot-multichannel.assono.de/req/";
+
+// URL the request refers to
+const referKey = "https://devbot-multichannel.assono.de/req/";
+
+// Conversation ID
+const convID = "7c0bc6d9-fdd3-47cf-897a-0b834e0eca2a";
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 // Start the webapp
 const webApp = express();
 
 // Webapp settings
-webApp.use(bodyParser.urlencoded({
-    extended: false
-}));
+webApp.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
 webApp.use(bodyParser.json());
 
 // Server Port
 const PORT = process.env.PORT;
 
 // Home route
-webApp.get('/', (req, res) => {
-    res.send(`Hello World.!`);
+webApp.get("/", (req, res) => {
+  res.send(`Hello World.!`);
 });
 
-const WA = require('./helper-function/whatsapp-send-message');
+const WA = require("./helper-function/whatsapp-send-message");
 
 // Route for WhatsApp
-webApp.post('/whatsapp', async (req, res) => {
+webApp.post("/whatsapp", async (req, res) => {
+  let message = req.body.Body;
+  let senderID = req.body.From;
 
-    let message = req.body.Body;
-    let senderID = req.body.From;
+  console.log(req.body);
+  console.log(message);
+  console.log(senderID);
 
-    console.log(req.body);
-    console.log(message);
-    console.log(senderID);
+  var data = JSON.stringify({
+    context: {
+      conversation_id: convID,
+      frontend_params: {},
+      parentReferrer: referKey,
+    },
+    message: message,
+    input: {
+      text: message,
+    },
+  });
+  console.log(data);
 
-    if(message == 'moin'){
-        res.send(`
-        <Response>
-            <Message>Hi!</Message>
-        </Response>
-    `);
-    }else if(message == 'button'){
+  var config = {
+    method: "post",
+    url: botURL,
+    headers: {
+      Referer: referKey,
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
 
-    }else if(message == 'link'){
-        res.send(`
-            <?xml version="1.0" encoding="UTF-8"?>
-            <Response>
-                <Message>
-                Klick da: <![CDATA[https://subscription.packtpub.com/book/application_development/9781782175896/1/ch01lvl1sec11/the-world-of-twiml-verbs]]>
-                </Message>
-            </Response>
-        `);
-    }else if(message == 'image'){
-        res.send(`
-            <?xml version="1.0" encoding="UTF-8"?>
-            <Response>
-                <Message>
-                    <Media>https://hg1ht-php.websale.biz/genussmagazin/wp-content/uploads/2021/09/Brotbacken_8.jpg</Media>
-                    <Body>hmmmm lecker!</Body>
-                </Message>
-            </Response>
-        `);
-    }else if(message == 'video'){
-        res.send(`
-            <?xml version="1.0" encoding="UTF-8"?>
-            <Response>
-                <Message>
-                    <Media>https://hg1ht-php.websale.biz/genussmagazin/wp-content/uploads/2021/09/Brotbacken_8.jpg</Media>
-                    <Body>hmmmm lecker!</Body>
-                </Message>
-            </Response>
-        `);
-    }else if(message == 'audio'){
-        res.send(`
-            <?xml version="1.0" encoding="UTF-8"?>
-            <Response>
-                <Message>
-                    <Message>Hier ist ein Audio:</Message>
-                    <Play>http://codeskulptor-demos.commondatastorage.googleapis.com/descent/background%20music.mp3</Play>
-                </Message>
-            </Response>
-        `);
-    }else if(message == 'youtube'){
-        
-    }
-    
-    await WA.sendMessage(message, senderID);
+  //
+  let answer;
+  await axios(config)
+    .then(function (response) {
+      answer = response.data;
+      console.log(answer);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
+  // Write a function to send message back to WhatsApp
+  await WA.sendMessage(answer, senderID);
 });
 
 // Start the server
 webApp.listen(PORT, () => {
-    console.log(`Server is up and running at ${PORT}`);
+  console.log(`Server is up and running at ${PORT}`);
 });
