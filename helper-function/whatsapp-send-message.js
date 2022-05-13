@@ -2,6 +2,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const html = require("./send-html.js")
+const link = require("./send-link.js")
 
 const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
@@ -17,7 +18,7 @@ const sendMessage = async (answer, senderID) => {
     var messageType = JSON.stringify(answer.messages[i].content[0].type).slice(1, -1);
 
     if (messageType == "markdown" || messageType == "html") {
-      html.sendHTML(answer, senderID, i)
+      await html.sendMessage(answer, senderID, i)
     } else if (messageType == "button") {
       let adress = "Du kannst folgende Stichworte antworten, um mehr zu erfahren: ";
       let bullets = [];
@@ -40,15 +41,7 @@ const sendMessage = async (answer, senderID) => {
         console.log(`Error at sendMessage --> ${error}`);
       }
     } else if (messageType == "link" || messageType == "youtube") {
-      try {
-        await client.messages.create({
-          to: senderID,
-          body: answer.messages[i].content[0].url,
-          from: `whatsapp:+14155238886`,
-        });
-      } catch (error) {
-        console.log(`Error at sendMessage --> ${error}`);
-      }
+      await link.sendLink(answer, senderID, i)
     } else if (messageType == "slider") {
       for (let j = 0; j < answer.messages[i].content[0].slides.length; j++) {
         try {
