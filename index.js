@@ -10,6 +10,8 @@ const axios = require("axios");
 const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").config();
+const WA = require("./helper-function/whatsapp-send-message");
+
 
 /////////////////////////////////////////////////////////////////
 /////////////////////BOT CONFIGURATION///////////////////////////
@@ -45,7 +47,7 @@ webApp.get("/", (req, res) => {
   res.send(`Hello World.!`);
 });
 
-const WA = require("./helper-function/whatsapp-send-message");
+
 
 // Route for WhatsApp
 webApp.post("/whatsapp", async (req, res) => {
