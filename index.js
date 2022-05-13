@@ -50,11 +50,17 @@ const WA = require("./helper-function/whatsapp-send-message");
 // Route for WhatsApp
 webApp.post("/whatsapp", async (req, res) => {
   let message = req.body.Body;
+
+  console.log("Contains number = " + (await WA.containsNumber(message)));
+  console.log("Messagecontext  = " + (await WA.getmessageContext()));
+
+  if ((await WA.getmessageContext()) == "buttons" && (await WA.containsNumber(message))) {
+    message = await WA.getButtonAnswer(message);
+  }
+
   let senderID = req.body.From;
 
-  console.log(req.body);
-  console.log(message);
-  console.log(senderID);
+  console.log("Das hir geht an Nordi: " + message);
 
   var data = JSON.stringify({
     context: {

@@ -5,6 +5,9 @@ const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
 });
 
+var messageContext = "";
+var buttonAnswers = [];
+
 // Function to send message to WhatsApp
 const sendMessage = async (answer, senderID) => {
   //Filter out the messageType from Nordi Bot message
@@ -24,11 +27,15 @@ const sendMessage = async (answer, senderID) => {
     } else if (messageType == "button") {
       let adress = "Du kannst folgende Stichworte antworten, um mehr zu erfahren: ";
       let bullets = [];
+      let options = [];
       let buttonAmount = answer.messages[i].content[0].buttons.length;
       for (let j = 0; j < buttonAmount; j++) {
         console.log(answer.messages[i].content[0].buttons[j].content[0].text);
-        bullets.push("\n" + (j+1) + '. "*' + answer.messages[i].content[0].buttons[j].content[0].text + '*"');
+        options.push(answer.messages[i].content[0].buttons[j].content[0].text);
+        bullets.push("\n" + (j + 1) + '. "*' + options[j] + '*"');
       }
+      buttonAnswers = options;
+      messageContext = "buttons";
       try {
         await client.messages.create({
           to: senderID,
@@ -79,6 +86,21 @@ const sendMessage = async (answer, senderID) => {
   }
 };
 
+const getmessageContext = async () => {
+  return messageContext;
+};
+
+const getButtonAnswer = async (i) => {
+  return buttonAnswers[i - 1];
+};
+
+const containsNumber = async (str) => {
+  return /\d/.test(str);
+};
+
 module.exports = {
   sendMessage,
+  getmessageContext,
+  getButtonAnswer,
+  containsNumber,
 };
