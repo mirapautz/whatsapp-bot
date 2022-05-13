@@ -1,6 +1,8 @@
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
+const html = require("./send-html.js")
+
 const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
 });
@@ -15,15 +17,7 @@ const sendMessage = async (answer, senderID) => {
     var messageType = JSON.stringify(answer.messages[i].content[0].type).slice(1, -1);
 
     if (messageType == "markdown" || messageType == "html") {
-      try {
-        await client.messages.create({
-          to: senderID,
-          body: answer.messages[i].content[0].text,
-          from: `whatsapp:+14155238886`,
-        });
-      } catch (error) {
-        console.log(`Error at sendMessage --> ${error}`);
-      }
+      html.sendHTML(answer, senderID, i)
     } else if (messageType == "button") {
       let adress = "Du kannst folgende Stichworte antworten, um mehr zu erfahren: ";
       let bullets = [];
