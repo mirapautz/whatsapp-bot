@@ -22,7 +22,8 @@ const sendMessage = async (answer, senderID) => {
         console.log(`Error at sendMessage --> ${error}`);
       }
     } else if (messageType == "button") {
-    } else if (messageType == "link") {
+
+    } else if (messageType == "link" || messageType == "youtube") {
       try {
         await client.messages.create({
           to: senderID,
@@ -45,7 +46,7 @@ const sendMessage = async (answer, senderID) => {
           console.log(`Error at sendMessage --> ${error}`);
         }
       }
-    } else if (messageType == "video" || messageType == "audio" || messageType == "youtube" || messageType == "image") {
+    } else if (messageType == "video" || messageType == "audio" ||  messageType == "image") {
       try {
         await client.messages.create({
           to: senderID,
