@@ -6,6 +6,7 @@ const button = require("./send-button.js")
 const link = require("./send-link.js")
 const slider = require("./send-slider.js")
 const media = require("./send-media.js")
+const disambiguation = require("./send-disambaguation.js")
 
 const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
@@ -34,6 +35,10 @@ const sendMessage = async (answer, senderID) => {
     } else if (messageType == "video" || messageType == "audio" || messageType == "image") {
       await media.sendMedia(answer, senderID, i)
     } else if (messageType == "disambiguation") {
+      messageContext = "buttons";
+      disambiguation.sendDisambiguation(answer, senderID, i)
+      buttonAnswers = await disambiguation.getOptions();
+      console.log(buttonAnswers)
     }
   }
 };
