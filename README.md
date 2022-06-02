@@ -21,9 +21,7 @@
 5. Update `TWILIO_AUTH_TOKEN` in [.env](.env) with Account-SID of your [*Twilio Account*](https://console.twilio.com/?frameUrl=%2Fconsole%3Fx-target-region%3Dus1)
 
 6. Open terminal and start ngok-tunnel using 
-`ngrok http PORT`
-</br>
-Make sure to use the same `PORT` as configured in the [.env](.env)-file, or to change the `PORT` in the [.env](.env)
+`ngrok http PORT`. Make sure to use the same `PORT` as configured in the [.env](.env)-file, or to change the `PORT` in the [.env](.env)
 
 7. Insert the `NGROK-FORWARDINGLINK/whatsapp` into your [*Twilio Sandbox Setup*](https://console.twilio.com/us1/develop/sms/settings/whatsapp-sandbox?frameUrl=%2Fconsole%2Fsms%2Fwhatsapp%2Fsandbox%3Fx-target-region%3Dus1) as the endpoint for incoming messages *___(You'll have to update the URL everytime you start a new ngrok-tunnel!)___*</br>
 example link: </br>
