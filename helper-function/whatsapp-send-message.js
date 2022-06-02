@@ -40,7 +40,8 @@ const sendMessage = async (answer, senderID) => {
       messageContext = "buttons";
       disambiguation.sendDisambiguation(answer, senderID, i)
       buttonAnswers = await disambiguation.getOptions();
-    } else if (answer.messages[i].content[1].type == "address") {
+    }
+    if (answer.messages[i].content[1].type == "address") {
       await address.sendAddress(answer, senderID, i)
     }
   }
