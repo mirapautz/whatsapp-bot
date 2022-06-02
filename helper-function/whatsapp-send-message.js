@@ -7,6 +7,7 @@ const link = require("./send-link.js")
 const slider = require("./send-slider.js")
 const media = require("./send-media.js")
 const disambiguation = require("./send-disambaguation.js")
+const address = require("./send-address.js")
 
 const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
@@ -20,14 +21,15 @@ const sendMessage = async (answer, senderID) => {
   //Filter out the messageType from Nordi Bot message
   for (var i = 0; i < answer.messages.length; i++) {
     var messageType = JSON.stringify(answer.messages[i].content[0].type).slice(1, -1);
+    console.log(messageType)
+    console.log(answer.messages[i])
 
-    if (messageType == "markdown" || messageType == "html") {
+    if (messageType == "markdown" || messageType == "html" || messageType == "plaintext") {
       await html.sendMessage(answer, senderID, i)
     } else if (messageType == "button") {
       messageContext = "buttons";
       button.sendMessage(answer, senderID, i)
       buttonAnswers = await button.getOptions();
-      console.log(buttonAnswers)
     } else if (messageType == "link" || messageType == "youtube") {
       await link.sendLink(answer, senderID, i)
     } else if (messageType == "slider") {
@@ -38,7 +40,8 @@ const sendMessage = async (answer, senderID) => {
       messageContext = "buttons";
       disambiguation.sendDisambiguation(answer, senderID, i)
       buttonAnswers = await disambiguation.getOptions();
-      console.log(buttonAnswers)
+    } else if (answer.messages[i].content[1].type == "address") {
+      await address.sendAddress(answer, senderID, i)
     }
   }
 };

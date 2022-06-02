@@ -17,13 +17,13 @@ const WA = require("./helper-function/whatsapp-send-message");
 /////////////////////BOT CONFIGURATION///////////////////////////
 
 // URL where the request to the bot is headed
-const botURL = "https://devbot-multichannel.assono.de/req/";
+const botURL = process.env.BOT_URL;
 
 // URL the request refers to
-const referKey = "https://devbot-multichannel.assono.de/req/";
+const referKey = process.env.REFER_KEY;
 
 // Conversation ID
-const convID = "7c0bc6d9-fdd3-47cf-897a-0b834e0eca2a";
+const convID = process.env.CONV_ID;
 
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -53,16 +53,14 @@ webApp.get("/", (req, res) => {
 webApp.post("/whatsapp", async (req, res) => {
   let message = req.body.Body;
 
-  console.log("Contains number = " + (await WA.containsNumber(message)));
-  console.log("Messagecontext  = " + (await WA.getmessageContext()));
+  //console.log("Contains number = " + (await WA.containsNumber(message)));
+  //console.log("Messagecontext  = " + (await WA.getmessageContext()));
 
   if ((await WA.getmessageContext()) == "buttons" && (await WA.containsNumber(message))) {
     message = await WA.getButtonAnswer(message);
   }
 
   let senderID = req.body.From;
-
-  console.log("Das hir geht an Nordi: " + message);
 
   var data = JSON.stringify({
     context: {
@@ -75,7 +73,6 @@ webApp.post("/whatsapp", async (req, res) => {
       text: message,
     },
   });
-  console.log(data);
 
   var config = {
     method: "post",
