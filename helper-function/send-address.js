@@ -11,7 +11,6 @@ const sendAddress = async (answer, senderID, i) => {
 
     let messagestring = "https://www.google.com/maps/place/" + mapsquery 
     try {
-    console.log("ich geb ne adresse aus")
         await client.messages.create({
             to: senderID,
             body: messagestring,

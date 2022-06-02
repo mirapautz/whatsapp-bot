@@ -15,11 +15,8 @@ const sendMessage = async (answer, senderID, i) => {
     let urlRE= new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+");
     let linkRaw= string.match(urlRE);
     var link= linkRaw.slice(0,1)
-    console.log("raw:"+ linkRaw)
-    console.log("link:"+ link)
     }
-    
-    
+     
   try {
     await client.messages.create({
       to: senderID,

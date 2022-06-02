@@ -53,9 +53,6 @@ webApp.get("/", (req, res) => {
 webApp.post("/whatsapp", async (req, res) => {
   let message = req.body.Body;
 
-  //console.log("Contains number = " + (await WA.containsNumber(message)));
-  //console.log("Messagecontext  = " + (await WA.getmessageContext()));
-
   if ((await WA.getmessageContext()) == "buttons" && (await WA.containsNumber(message))) {
     message = await WA.getButtonAnswer(message);
   }
@@ -89,7 +86,6 @@ webApp.post("/whatsapp", async (req, res) => {
   await axios(config)
     .then(function (response) {
       answer = response.data;
-      console.log(answer);
     })
     .catch(function (error) {
       console.log(error);

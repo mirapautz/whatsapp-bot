@@ -21,8 +21,6 @@ const sendMessage = async (answer, senderID) => {
   //Filter out the messageType from Nordi Bot message
   for (var i = 0; i < answer.messages.length; i++) {
     var messageType = JSON.stringify(answer.messages[i].content[0].type).slice(1, -1);
-    console.log(messageType)
-    console.log(answer.messages[i])
 
     if (messageType == "markdown" || messageType == "html" || messageType == "plaintext") {
       await html.sendMessage(answer, senderID, i)
