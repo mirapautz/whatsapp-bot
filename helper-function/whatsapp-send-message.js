@@ -31,7 +31,7 @@ const sendMessage = async (answer, senderID) => {
         await html.sendMessage(answer, senderID, i, j);
       } else if (messageType == "button") {
         messageContext = "buttons";
-        button.sendMessage(answer, senderID, i, y);
+        button.sendMessage(answer, senderID, i);
         buttonAnswers = await button.getOptions();
       } else if (messageType == "link" || messageType == "youtube") {
         await link.sendLink(answer, senderID, i);
@@ -43,9 +43,7 @@ const sendMessage = async (answer, senderID) => {
         messageContext = "buttons";
         disambiguation.sendDisambiguation(answer, senderID, i);
         buttonAnswers = await disambiguation.getOptions();
-      } else if (answer.messages[i].content[y].type == "address") {
-        await address.sendAddress(answer, senderID, i, j);
-      }
+      } 
     }
   }
 };
