@@ -15,25 +15,32 @@ const sendMessage = async (answer, senderID, i, j) => {
   } else {
     string = answer.messages[i].content[j].text;
   }
-
+  
   //strip html
   if (string.includes("href")) {
     //extract link from message and create a new message with the link
-    let urlRE = new RegExp(
-      "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+"
-    );
-    let linkRaw = string.match(urlRE);
-    var link = linkRaw.slice(0, 1);
+    var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+    var link = string.match(urlRegex)[0]
+    
+    
   }
+
+  let strippedstring = string.replace(/<[^>]*>?/gm, "")
+
+  console.log("string: " +string)
+  console.log("strippedstring: " +strippedstring)
+  console.log("link: " +link)
+  
+  
 
   try {
     await client.messages.create({
       to: senderID,
-      body: string.replace(/<[^>]*>?/gm, ""),
+      body: strippedstring,
       from: `whatsapp:+14155238886`,
     });
 
-    if (link != null) {
+    if (link != null && strippedstring.includes(link) == false ) {
       try {
         await client.messages.create({
           to: senderID,
@@ -57,3 +64,5 @@ const sendMessage = async (answer, senderID, i, j) => {
 module.exports = {
   sendMessage,
 };
+
+
