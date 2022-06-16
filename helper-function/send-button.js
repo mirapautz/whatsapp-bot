@@ -7,13 +7,13 @@ const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
 });
 
-var buttonAnswers = []
+var buttonAnswers = [];
 
 const sendMessage = async (answer, senderID, i) => {
-  let adress = "Du kannst folgende Stichworte antworten, um mehr zu erfahren: ";
+  let adress = process.env.ADRESS_USER + ": \n";
   let buttonAmount = answer.messages[i].content[0].buttons.length;
   let bullets = [];
-  let options = []
+  let options = [];
 
   for (let j = 0; j < buttonAmount; j++) {
     options.push(answer.messages[i].content[0].buttons[j].content[0].text);

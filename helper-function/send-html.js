@@ -15,23 +15,15 @@ const sendMessage = async (answer, senderID, i, j) => {
   } else {
     string = answer.messages[i].content[j].text;
   }
-  
+
   //strip html
   if (string.includes("href")) {
     //extract link from message and create a new message with the link
     var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
-    var link = string.match(urlRegex)[0]
-    
-    
+    var link = string.match(urlRegex)[0];
   }
 
-  let strippedstring = string.replace(/<[^>]*>?/gm, "")
-
-  console.log("string: " +string)
-  console.log("strippedstring: " +strippedstring)
-  console.log("link: " +link)
-  
-  
+  let strippedstring = string.replace(/<[^>]*>?/gm, "");
 
   try {
     await client.messages.create({
@@ -40,7 +32,7 @@ const sendMessage = async (answer, senderID, i, j) => {
       from: `whatsapp:+14155238886`,
     });
 
-    if (link != null && strippedstring.includes(link) == false ) {
+    if (link != null && strippedstring.includes(link) == false) {
       try {
         await client.messages.create({
           to: senderID,
@@ -64,5 +56,3 @@ const sendMessage = async (answer, senderID, i, j) => {
 module.exports = {
   sendMessage,
 };
-
-

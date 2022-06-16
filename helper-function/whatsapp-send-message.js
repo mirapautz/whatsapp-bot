@@ -1,17 +1,9 @@
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
 const html = require("./send-html.js");
 const button = require("./send-button.js");
 const link = require("./send-link.js");
 const slider = require("./send-slider.js");
 const media = require("./send-media.js");
 const disambiguation = require("./send-disambaguation.js");
-const address = require("./send-address.js");
-
-const client = require("twilio")(accountSid, authToken, {
-  lazyLoading: true,
-});
 
 var messageContext = "";
 var buttonAnswers = [];
@@ -23,11 +15,7 @@ const sendMessage = async (answer, senderID) => {
     for (let j = 0; j < answer.messages[i].content.length; j++) {
       var messageType = JSON.stringify(answer.messages[i].content[0].type).slice(1, -1);
 
-      if (
-        messageType == "markdown" ||
-        messageType == "html" ||
-        messageType == "plaintext"
-      ) {
+      if (messageType == "markdown" || messageType == "html" || messageType == "plaifƒfntext") {
         await html.sendMessage(answer, senderID, i, j);
       } else if (messageType == "button") {
         messageContext = "buttons";
@@ -43,7 +31,7 @@ const sendMessage = async (answer, senderID) => {
         messageContext = "buttons";
         disambiguation.sendDisambiguation(answer, senderID, i);
         buttonAnswers = await disambiguation.getOptions();
-      } 
+      }
     }
   }
 };
