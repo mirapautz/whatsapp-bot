@@ -35,8 +35,9 @@ webApp.get("/", (req, res) => {
 webApp.post("/whatsapp", async (req, res) => {
   let message = req.body.Body;
 
+  // check if buttons or disambiguation have been sent before, check if user response contains integer
   if ((await WA.getmessageContext()) == "buttons" && (await WA.containsNumber(message))) {
-    message = await WA.getButtonAnswer(message);
+    message = await WA.getButtonAnswer(message); //set user response to bot to button content matching integer sent by user
   }
 
   let senderID = req.body.From;
@@ -54,7 +55,7 @@ webApp.post("/whatsapp", async (req, res) => {
     },
   });
 
-  // HTTP-Request Header configuration 
+  // HTTP-Request Header configuration
   var config = {
     method: "post",
     url: process.env.BOT_URL,
@@ -79,7 +80,7 @@ webApp.post("/whatsapp", async (req, res) => {
   await WA.sendMessage(answer, senderID);
 });
 
-// Starts the server 
+// Starts the server
 webApp.listen(PORT, () => {
   console.log(`Server is up and running at ${PORT}`);
 });
