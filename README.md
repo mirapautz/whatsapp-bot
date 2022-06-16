@@ -36,3 +36,15 @@ Twilio sandbox: </br>
 10. Start messaging the bot!
 
 *If you've already done the initial setup of the project once, you can skip steps 1 - 5.*
+
+## How to connect another bot
+
+1. Replace the current ```BOT_URL``` in [.env](.env) with the URL of your bot
+
+2. Change the ```REFER_KEY``` in [.env](.env) to the corresponding referer-header of your bot
+
+3. Replace the ```CONV_ID``` in [.env](.env) with your conversation ID.
+
+## How to change the way the bot adresses users when displaying "buttons"
+
+- Replace the ```ADRESS_USER```in [.env](.env) with the String, you want the bot to display.
