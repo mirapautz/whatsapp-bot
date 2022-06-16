@@ -9,9 +9,9 @@ const client = require("twilio")(accountSid, authToken, {
 const sendMessage = async (answer, senderID, i, j) => {
   let string;
 
-  // Check if conten contains an adress
+  // Check if content contains an adress
   if (answer.messages[i].content[j].type == "address") {
-    string = await adress.sendAddress(answer, i, j);
+    string = await adress.sendAddress(answer, i, j); // get formatted google maps link from send.Address()
   } else {
     string = answer.messages[i].content[j].text;
   }
@@ -23,7 +23,7 @@ const sendMessage = async (answer, senderID, i, j) => {
     var link = string.match(urlRegex)[0];
   }
 
-  let strippedstring = string.replace(/<[^>]*>?/gm, "");
+  let strippedstring = string.replace(/<[^>]*>?/gm, ""); //remove html-tags from string
 
   try {
     await client.messages.create({
@@ -32,6 +32,7 @@ const sendMessage = async (answer, senderID, i, j) => {
       from: `whatsapp:+14155238886`,
     });
 
+    // if the link is not included in body of first message, sent second message with link.
     if (link != null && strippedstring.includes(link) == false) {
       try {
         await client.messages.create({

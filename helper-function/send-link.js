@@ -5,11 +5,12 @@ const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
 });
 
+// get url from answer and send it as message
 const sendLink = async (answer, senderID, i) => {
   try {
     await client.messages.create({
       to: senderID,
-      body: answer.messages[i].content[0].url,
+      body: answer.messages[i].content[0].url, 
       from: `whatsapp:+14155238886`,
     });
   } catch (error) {

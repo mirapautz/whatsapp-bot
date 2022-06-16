@@ -5,6 +5,7 @@ const client = require("twilio")(accountSid, authToken, {
   lazyLoading: true,
 });
 
+// send content-URL as media-URL, which whatsapp load internally (file size can't exceed 500kb)
 const sendMedia = async (answer, senderID, i) => {
   try {
     await client.messages.create({

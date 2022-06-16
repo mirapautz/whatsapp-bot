@@ -12,21 +12,6 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const WA = require("./helper-function/whatsapp-send-message");
 
-/////////////////////////////////////////////////////////////////
-/////////////////////BOT CONFIGURATION///////////////////////////
-
-// URL where the request to the bot is headed
-const botURL = process.env.BOT_URL;
-
-// URL the request refers to
-const referKey = process.env.REFER_KEY;
-
-// Conversation ID
-const convID = process.env.CONV_ID;
-
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-
 // Start the webapp
 const webApp = express();
 
@@ -56,11 +41,12 @@ webApp.post("/whatsapp", async (req, res) => {
 
   let senderID = req.body.From;
 
+  // HTTP-Request body from user message in whatsapp
   var data = JSON.stringify({
     context: {
-      conversation_id: convID,
+      conversation_id: process.env.CONV_ID,
       frontend_params: {},
-      parentReferrer: referKey,
+      parentReferrer: process.env.REFER_KEY,
     },
     message: message,
     input: {
@@ -68,16 +54,18 @@ webApp.post("/whatsapp", async (req, res) => {
     },
   });
 
+  // HTTP-Request Header configuration 
   var config = {
     method: "post",
-    url: botURL,
+    url: process.env.BOT_URL,
     headers: {
-      Referer: referKey,
+      Referer: process.env.REFER_KEY,
       "Content-Type": "application/json",
     },
     data: data,
   };
 
+  // on http response, save response data in var "answer"
   let answer;
   await axios(config)
     .then(function (response) {
@@ -87,11 +75,11 @@ webApp.post("/whatsapp", async (req, res) => {
       console.log(error);
     });
 
-  // Write a function to send message back to WhatsApp
+  // parse answer and senderID to helpder functions for further processing
   await WA.sendMessage(answer, senderID);
 });
 
-// Start the server
+// Starts the server 
 webApp.listen(PORT, () => {
   console.log(`Server is up and running at ${PORT}`);
 });
